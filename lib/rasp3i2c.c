@@ -37,21 +37,6 @@ void wait_i2c_done() {
 }
 
 
-
-int I2C_test()
-{
-    REG[BSC1_A] = 0x33;
-
-    REG[BSC1_DLEN] = 1;
-    REG[BSC1_FIFO] = (unsigned char)0x22;
-    REG[BSC1_FIFO] = (unsigned char)0x88;
-	
-    REG[BSC1_S] = CLEAR_STATUS; 	// Reset status bits (see #define)
-    REG[BSC1_C] = START_WRITE;    	// Start Write (see #define)
-
-    wait_i2c_done();
-}
-
 int I2C_write(unsigned char slaveAddr,unsigned char regAddr, unsigned char regValue)
 {
     RP3_GPIO_pin_set(4);
