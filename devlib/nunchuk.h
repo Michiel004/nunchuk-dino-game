@@ -1,7 +1,7 @@
 #ifndef  NUNCHUK_H_
 #define NUNCHUK_H_
 
-#include "rasp3base.h"
+#include "../lib/rasp3base.h"
 #include <stdint.h>
 
 void  nunchuk_init();

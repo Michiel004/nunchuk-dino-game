@@ -56,6 +56,37 @@ void LIB_ILIDRAW_image(uint16_t image[], int x, int y, int w, int h){
 	}
 }
 
+void LIB_ILIDRAW_image_partial(uint16_t image[], int x, int y, int w, int h, int startX, int startY, int width, int height){
+	if((startX + width) > w) width = w - startX;
+	if((startY + height) > h) height = h - startY;
+	if(width <= 0) return;
+	if(height <= 0) return;
+	
+	
+	int xs = x + startX;
+	int xe = x + startX + width - 1;
+	int ys = y + startY;
+	int ye = y + startY + height - 1;
+	
+	if(xs < 0) xs = 0;
+	if(xe >= 175) xe = 175;
+	if(ys < 0) ys = 0;
+	if(ye >= 219) ye = 219;
+	
+	LIB_ILI9225_set_window(xs, ys, xe, ye, 0);
+	LIB_ILIDRAW_set_position(xs, ys);
+	
+	LIB_ILI9225_wcom(LIB_ILI9225_WDGRAM);
+	
+	int j = 0;
+	int k = 0;
+	for(j = ys; j <= ye; j++){
+		for(k = xs; k <= xe; k++){
+			LIB_ILI9225_wdata(image[(j - y) * w + (k - x)]);
+		}
+	}
+}
+
 void LIB_ILIDRAW_image_special(uint16_t image[], int x, int y, int w, int h){
 	int xs = x;
 	int xe = x + w - 1;
@@ -82,29 +113,40 @@ void LIB_ILIDRAW_image_special(uint16_t image[], int x, int y, int w, int h){
 			}
 		}
 	}
-	/*LIB_ILI9225_set_window(xs, ys, xe, ye, 0);
-	LIB_ILIDRAW_set_position(xs, ys);
+}
+
+void LIB_ILIDRAW_image_special_partial(uint16_t image[], int x, int y, int w, int h, int startX, int startY, int width, int height){
+	if((startX + width) > w) width = w - startX;
+	if((startY + height) > h) height = h - startY;
+	if(width <= 0) return;
+	if(height <= 0) return;
 	
-	LIB_ILI9225_wcom(LIB_ILI9225_WDGRAM);
+	
+	int xs = x + startX;
+	int xe = x + startX + width - 1;
+	int ys = y + startY;
+	int ye = y + startY + height - 1;
+	
+	if(xs < 0) xs = 0;
+	if(xe >= 175) xe = 175;
+	if(ys < 0) ys = 0;
+	if(ye >= 219) ye = 219;
+	
+	if(xs < xMin) xMin = xs;
+	if(ys < yMin) yMin = ys;
+	if(xe > xMax) xMax = xe;
+	if(ye > yMax) yMax = ye;
 	
 	int j = 0;
 	int k = 0;
-	
 	for(j = ys; j <= ye; j++){
-		if( j < sy){
-			for(k = xs; k <= xe; k++){
-				LIB_ILI9225_wdata(image[(j - y) * w + (k - x)]);
-			}
-		}else{
-			for(k = xs; k <= xe; k++){
-				if(image[(j - y) * w + (k - x)] != 0xffff){
-					LIB_ILIDRAW_set_position(k, j);
-					LIB_ILI9225_wcom(LIB_ILI9225_WDGRAM);
-					LIB_ILI9225_wdata(image[(j - y) * w + (k - x)]);
-				}
+		for(k = xs; k <= xe; k++){
+			uint16_t pixel = image[(j - y) * w + (k - x)];
+			if(pixel != 0xffff){
+				savedIm[k][j] = pixel;
 			}
 		}
-	}*/
+	}
 }
 
 void LIB_ILIDRAW_image_special_draw(){
@@ -185,6 +227,31 @@ void LIB_ILIDRAW_clear(uint8_t red, uint8_t green, uint8_t blue){
 	int k = 0;
 	for(j = xs; j <= xe; j++){
 		for(k = ys; k <= ye; k++){
+			LIB_ILIDRAW_write_color(red, green, blue);
+		}
+	}
+}
+
+void LIB_ILIDRAW_clear_part(uint8_t red, uint8_t green, uint8_t blue, int x, int y, int w, int h){
+	int xs = x;
+	int xe = x + w - 1;
+	int ys = y;
+	int ye = y + h - 1;
+	
+	if(xs < 0) xs = 0;
+	if(xe >= 175) xe = 175;
+	if(ys < 0) ys = 0;
+	if(ye >= 219) ye = 219;
+	
+	LIB_ILI9225_set_window(xs, ys, xe, ye, 0);
+	LIB_ILIDRAW_set_position(xs, ys);
+	
+	LIB_ILI9225_wcom(LIB_ILI9225_WDGRAM);
+	
+	int j = 0;
+	int k = 0;
+	for(j = ys; j <= ye; j++){
+		for(k = xs; k <= xe; k++){
 			LIB_ILIDRAW_write_color(red, green, blue);
 		}
 	}

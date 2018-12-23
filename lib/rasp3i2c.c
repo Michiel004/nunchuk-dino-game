@@ -25,7 +25,7 @@ void wait_i2c_done() {
         while((!((REG[BSC1_S]) & BSC_S_DONE))) {
         }
 	REG[BSC1_S] = 0xff;
-	volatile i = 0;
+	volatile int i = 0;
 	for(i=0 ; i < 250 ; i++);
 }
 

@@ -201,6 +201,14 @@
 #define IRQRQST_SPI			54
 #define IRQRQST_PCM			55
 #define IRQRQST_UART		57
+#define IRQRQST_ATI			64
+#define IRQRQST_AMI			65
+#define IRQRQST_AD0I		66
+#define IRQRQST_AD1I		67
+#define IRQRQST_GHI0		68
+#define IRQRQST_GHI1		69
+#define IRQRQST_IAT1I		70
+#define IRQRQST_IAT0I		71
 
 #define IRQFIQSRC_GPU		 0
 #define IRQFIQSRC_TIMER		64
@@ -333,4 +341,24 @@
 
 #define CLEAR_STATUS    BSC_S_CLKT|BSC_S_ERR|BSC_S_DONE
 /*****/
+
+/*TIMER*/
+#define TIMLOAD				0x02D00
+#define TIMVAL				0x02D01
+#define TIMCONT				0x02D02
+#define TIMIRQC				0x02D03
+#define TIMRIRQ				0x02D04
+#define TIMMIRQ				0x02D05
+#define TIMREL				0x02D06
+#define TIMPRED				0x02D07
+#define TIMFRC				0x02D08
+
+#define TIMCONT_RFC_PRESC	16
+#define TIMCONT_RFC_ENA		 9
+#define TIMCONT_DBUG_HAL	 8
+#define TIMCONT_ENA			 7
+#define TIMCONT_INT_ENA		 5
+#define TIMCONT_PRESC		 2
+#define TIMCONT_BITS		 1
+/*******/
 #endif

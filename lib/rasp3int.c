@@ -1,6 +1,8 @@
 #include "rasp3int.h"
 #include "rasp3base.h"
 
+#include "rasp3gpio.h"
+
 #include <stdint.h>
 
 volatile unsigned int tim;
@@ -8,8 +10,8 @@ volatile unsigned int tim;
 extern volatile unsigned int* REG;
 extern void enable_irq_ASM ( void );
 
-void (*IntterruptFunctions[16])(void);
-uint16_t functionsUsed = 0;
+void (*IntterruptFunctions[24])(void);
+uint32_t functionsUsed = 0;
 
 int getIntterruptFunctionNumber(uint16_t reg);
 
@@ -26,6 +28,8 @@ void RP3_INT_enableIRQFunction(uint16_t reg, void (*fun)()){
 			REG[IRQENA1] = 1<<reg;
 		else
 			REG[IRQENA2] = 1<<(reg - 32);
+	}else if(reg < 72){
+		REG[IRQENABASIC] = 1<<(reg - 64);
 	}
 }
 
@@ -37,6 +41,8 @@ void RP3_INT_disableIRQFunction(uint16_t reg){
 			REG[IRQDIS1] = 1<<reg;
 		else
 			REG[IRQDIS2] = 1<<(reg - 32);
+	}else if(reg < 72){
+		REG[IRQDISBASIC] = 1<<(reg - 64);
 	}
 }
 
@@ -55,6 +61,7 @@ void RASPBERRY_PI_INTERRUPT_DATA(){
 void RASPBERRY_PI_INTERRUPT_IRQ(){
 	uint32_t intterupts1 = REG[IRQPEND1];
 	uint32_t intterupts2 = REG[IRQPEND2];
+	uint32_t intteruptsB = REG[IRQBASIC];
 	int i;
 	for(i = 0; i < 32; i++){
 		if((intterupts1 >> i) & 1){
@@ -70,6 +77,17 @@ void RASPBERRY_PI_INTERRUPT_IRQ(){
 	for(i = 0; i < 32; i++){
 		if((intterupts2 >> i) & 1){
 			int ifn = getIntterruptFunctionNumber(i+32);
+			if(ifn >= 0){
+				if((functionsUsed >> ifn) & 1){
+					(*IntterruptFunctions[ifn])(); 
+				}
+			}
+		}
+	}
+	
+	for(i = 0; i < 9; i++){
+		if((intteruptsB >> i) & 1){
+			int ifn = getIntterruptFunctionNumber(i+64);
 			if(ifn >= 0){
 				if((functionsUsed >> ifn) & 1){
 					(*IntterruptFunctions[ifn])(); 
@@ -101,6 +119,14 @@ int getIntterruptFunctionNumber(uint16_t reg){
 		case IRQRQST_SPI:			return 13;
 		case IRQRQST_PCM:			return 14;
 		case IRQRQST_UART:			return 15;
+		case IRQRQST_ATI:			return 16;
+		case IRQRQST_AMI:			return 17;
+		case IRQRQST_AD0I:			return 18;
+		case IRQRQST_AD1I:			return 19;
+		case IRQRQST_GHI0:			return 20;
+		case IRQRQST_GHI1:			return 21;
+		case IRQRQST_IAT1I:			return 22;
+		case IRQRQST_IAT0I:			return 23;
 		default:					return -1;
 	}
 }

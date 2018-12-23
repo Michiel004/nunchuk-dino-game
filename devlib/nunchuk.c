@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "rasp3i2c.h"
+#include "../lib/rasp3i2c.h"
 
 void nunchuk_init()
 {
