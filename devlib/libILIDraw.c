@@ -62,7 +62,6 @@ void LIB_ILIDRAW_image_partial(uint16_t image[], int x, int y, int w, int h, int
 	if(width <= 0) return;
 	if(height <= 0) return;
 	
-	
 	int xs = x + startX;
 	int xe = x + startX + width - 1;
 	int ys = y + startY;
@@ -121,7 +120,6 @@ void LIB_ILIDRAW_image_special_partial(uint16_t image[], int x, int y, int w, in
 	if(width <= 0) return;
 	if(height <= 0) return;
 	
-	
 	int xs = x + startX;
 	int xe = x + startX + width - 1;
 	int ys = y + startY;
@@ -178,39 +176,6 @@ void LIB_ILIDRAW_image_special_setMinMax(int xs, int ys, int w, int h){
 	if(ys < yMin) yMin = ys;
 	if(xe > xMax) xMax = xe;
 	if(ye > yMax) yMax = ye;
-}
-
-void LIB_ILIDRAW_test(){
-	int xs = 0;
-	int ys = 0;
-	int xe = 219;
-	int ye = 175;
-	
-	LIB_ILI9225_set_window(ys, xs, ye, xe, 0);
-	
-	LIB_ILIDRAW_set_position(xs, ys);
-	LIB_ILI9225_wcom(LIB_ILI9225_WDGRAM);
-	int j = 0;
-	int k = 0;
-	for(j = xs; j <= xe; j++){
-		for(k = ys; k <= ye; k++){
-			uint8_t red = 0;
-			uint8_t green = 0;
-			uint8_t blue = 0;
-			if(j < 32){
-				red = j;
-			}else if(j < 96){
-				green = j + 32;
-			}else if(j < 128){
-				blue = j;
-			}else{
-				red = j;
-				green = j << 1;
-				blue = j;
-			}
-			LIB_ILIDRAW_write_color(red, green, blue);
-		}
-	}
 }
 
 void LIB_ILIDRAW_clear(uint8_t red, uint8_t green, uint8_t blue){

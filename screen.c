@@ -14,8 +14,6 @@
 
 #include <stdint.h>
 
-//volatile unsigned int tim;
-
 int i = 0;
 int j = 0;
 int k = 0;
@@ -73,12 +71,9 @@ int mainfunc(){
 		
 		LIB_ILIDRAW_image_special(imageGround, i, 120, 600, 6);
 		LIB_ILIDRAW_image_special(imageGround, i + 600, 120, 600, 6);
-		
-		//LIB_ILIDRAW_image_special_setMinMax(5, 100 - lasty, 22, 25);
-		
+
 		Zbutton = nunchuk_button_Z();
 		Cbutton = nunchuk_button_C();
-		
 		
 		if(death == 0){
 			
@@ -133,10 +128,8 @@ int mainfunc(){
 		{
 			LIB_ILIDRAW_image_special(imageDino[4], 5, 100 - y, 22, 25);
 			LIB_ILIDRAW_image_special_draw();
-			if((Zbutton == 0) || (Cbutton == 0) ){
+			if((Zbutton == 0) || (Cbutton == 0) )
 				death++;
-				
-			}
 		}
 		
 		if(death >= 3){

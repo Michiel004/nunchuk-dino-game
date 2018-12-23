@@ -13,6 +13,5 @@ void LIB_ILIDRAW_image_special_draw();
 void LIB_ILIDRAW_image_special_setMinMax(int xs, int ys, int xe, int ye);
 void LIB_ILIDRAW_clear(uint8_t red, uint8_t green, uint8_t blue);
 void LIB_ILIDRAW_clear_part(uint8_t red, uint8_t green, uint8_t blue, int x, int y, int w, int h);
-void LIB_ILIDRAW_test();
 
 #endif
