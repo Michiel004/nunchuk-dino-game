@@ -3,9 +3,9 @@
 #include "lib/rasp3spi.h"
 #include "lib/rasp3i2c.h"
 #include "lib/nunchuk.h"
-#include "image_dino.h"
-#include "image_ground.h"
-#include "image_obst.h"
+#include "data/image_dino.h"
+#include "data/image_ground.h"
+#include "data/image_obst.h"
 #include <stdint.h>
 
 volatile unsigned int tim;
