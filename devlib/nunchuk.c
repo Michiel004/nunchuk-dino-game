@@ -3,6 +3,7 @@
 
 void nunchuk_init()
 {
+	I2C_init();
 	I2C_write(0x52,0x40,0x00); // initialize NUNCHUCK
 	I2C_write_without_regAddr(0x52, 0x00);  
 }

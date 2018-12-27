@@ -5,14 +5,20 @@
 
 #include <stdint.h>
 
+//reference to the variable that holds all the registers
+extern volatile unsigned int* REG;
+
+//timer variable
 volatile unsigned int tim;
 
-extern volatile unsigned int* REG;
-extern void enable_irq_ASM ( void );
+//function in assembler
+extern void enable_irq_ASM ( void ); 
 
+//interrupt functions
 void (*IntterruptFunctions[24])(void);
-uint32_t functionsUsed = 0;
+uint32_t functionsUsed = 0;//witch functions are actually used
 
+//get the array spot from the interrupt id
 int getIntterruptFunctionNumber(uint16_t reg);
 
 void RP3_INT_enable_irq(){
@@ -20,9 +26,11 @@ void RP3_INT_enable_irq(){
 }
 
 void RP3_INT_enableIRQFunction(uint16_t reg, void (*fun)()){
-	int ifn = getIntterruptFunctionNumber(reg);
-	IntterruptFunctions[ifn] = fun;
-	functionsUsed |= 1 <<ifn;
+	int ifn = getIntterruptFunctionNumber(reg);//get the position in the array
+	IntterruptFunctions[ifn] = fun;//add the function to the array
+	functionsUsed |= 1 <<ifn;//set the function to used
+	
+	//enable the interrupt in the registers
 	if(reg < 64){
 		if(reg < 32)
 			REG[IRQENA1] = 1<<reg;
@@ -34,8 +42,10 @@ void RP3_INT_enableIRQFunction(uint16_t reg, void (*fun)()){
 }
 
 void RP3_INT_disableIRQFunction(uint16_t reg){
-	int ifn = getIntterruptFunctionNumber(reg);
-	functionsUsed &= ~(1 <<ifn);
+	int ifn = getIntterruptFunctionNumber(reg);//get the position in the array
+	functionsUsed &= ~(1 <<ifn);//set the function to not used
+	
+	//disable the interrupt in the registers
 	if(reg < 64){
 		if(reg < 32)
 			REG[IRQDIS1] = 1<<reg;
@@ -47,22 +57,25 @@ void RP3_INT_disableIRQFunction(uint16_t reg){
 }
 
 void RASPBERRY_PI_INTERRUPT_SWI(){
-	
+	/*NOT IMPLEMENTED*/
 }
 	
 void RASPBERRY_PI_INTERRUPT_PREFETCH(){
-	
+	/*NOT IMPLEMENTED*/
 }
 
 void RASPBERRY_PI_INTERRUPT_DATA(){
-	
+	/*NOT IMPLEMENTED*/
 }
 
-void RASPBERRY_PI_INTERRUPT_IRQ(){
+void RASPBERRY_PI_INTERRUPT_IRQ(){//when there was an interrupt
+	//get the pendant interrupts
 	uint32_t intterupts1 = REG[IRQPEND1];
 	uint32_t intterupts2 = REG[IRQPEND2];
 	uint32_t intteruptsB = REG[IRQBASIC];
 	int i;
+	//go over each interrupt, check if it is pendant 
+	//and if needed, run the stored function.
 	for(i = 0; i < 32; i++){
 		if((intterupts1 >> i) & 1){
 			int ifn = getIntterruptFunctionNumber(i);
@@ -73,7 +86,6 @@ void RASPBERRY_PI_INTERRUPT_IRQ(){
 			}
 		}
 	}
-	
 	for(i = 0; i < 32; i++){
 		if((intterupts2 >> i) & 1){
 			int ifn = getIntterruptFunctionNumber(i+32);
@@ -84,7 +96,6 @@ void RASPBERRY_PI_INTERRUPT_IRQ(){
 			}
 		}
 	}
-	
 	for(i = 0; i < 9; i++){
 		if((intteruptsB >> i) & 1){
 			int ifn = getIntterruptFunctionNumber(i+64);
@@ -98,10 +109,11 @@ void RASPBERRY_PI_INTERRUPT_IRQ(){
 }
 
 void RASPBERRY_PI_INTERRUPT_FIQ(){
-	
+	/*NOT IMPLEMENTED*/
 }
 	
 int getIntterruptFunctionNumber(uint16_t reg){
+	//every interrupt id has its place in the array
 	switch(reg){
 		case IRQRQST_TIMERMATCH1:	return  0;
 		case IRQRQST_TIMERMATCH3:	return  1;

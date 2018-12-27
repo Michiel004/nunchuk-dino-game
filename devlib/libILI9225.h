@@ -438,8 +438,4 @@ void LIB_ILI9225_set_window(uint8_t xStart, uint8_t yStart, uint8_t xStop, uint8
 #define LIB_ILI9225_GC10_VRN01		 1
 #define LIB_ILI9225_GC10_VRN00		 0
 
-/*FUNCTION INPUT DEF*/
-
-
-
 #endif

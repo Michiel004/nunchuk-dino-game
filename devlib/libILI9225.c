@@ -19,21 +19,17 @@ uint16_t LIB_ILI9225_get_reg_local_addr(uint16_t reg);
 uint16_t LIB_ILI9225_get_local_addr_reg(uint16_t addr);
 
 void LIB_ILI9225_init(uint32_t clock, int GPIO_RS, int GPIO_CS){
-	//pin_rst = GPIO_RST;
 	pin_rs = GPIO_RS;
 	pin_cs = GPIO_CS;
 	
 	RP3_SPI_init(clock);
 	
-	//RP3_GPIO_set_pull(pin_rst, RP3_GPIO_pull_non);
 	RP3_GPIO_set_pull(pin_rs, RP3_GPIO_pull_non);
 	RP3_GPIO_set_pull(pin_cs, RP3_GPIO_pull_non);
 	
-	//RP3_GPIO_set_as_output(pin_rst);
 	RP3_GPIO_set_as_output(pin_rs);
 	RP3_GPIO_set_as_output(pin_cs);
 	
-	//RP3_GPIO_pin_set(pin_rst);
 	RP3_GPIO_pin_clear(pin_rs);
 	RP3_GPIO_pin_set(pin_cs);
 	
@@ -51,7 +47,7 @@ void LIB_ILI9225_init(uint32_t clock, int GPIO_RS, int GPIO_CS){
 	LIB_ILI9225_write_reg(LIB_ILI9225_PC3, 0x6121, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_PC4, 0x006F, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_PC5, 0x495F, 0xFFFF);
-	LIB_ILI9225_write_reg(LIB_ILI9225_PC1, 0x0A00, 0xFFFF);//0x0800
+	LIB_ILI9225_write_reg(LIB_ILI9225_PC1, 0x0A00, 0xFFFF);
 	
 	for(tim = 0; tim < 100000; tim++);
 	
@@ -60,13 +56,13 @@ void LIB_ILI9225_init(uint32_t clock, int GPIO_RS, int GPIO_CS){
 	for(tim = 0; tim < 100000; tim++);
 	
 	LIB_ILI9225_write_reg(LIB_ILI9225_DOC		, 0x011C, 0xFFFF);
-	LIB_ILI9225_write_reg(LIB_ILI9225_LCDACDC	, 0x0100, 0xFFFF);//0x0000
-	LIB_ILI9225_write_reg(LIB_ILI9225_EM		, 0x1030, 0xFFFF);//0x1038
+	LIB_ILI9225_write_reg(LIB_ILI9225_LCDACDC	, 0x0100, 0xFFFF);
+	LIB_ILI9225_write_reg(LIB_ILI9225_EM		, 0x1030, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_DC1		, 0x0000, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_BPC1		, 0x0808, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_FCC		, 0x1100, 0xFFFF);
-	LIB_ILI9225_write_reg(LIB_ILI9225_IC		, 0x0001, 0xFFFF);//0x0000
-	LIB_ILI9225_write_reg(LIB_ILI9225_OC		, 0x0801, 0xFFFF);//0x0D01
+	LIB_ILI9225_write_reg(LIB_ILI9225_IC		, 0x0001, 0xFFFF);
+	LIB_ILI9225_write_reg(LIB_ILI9225_OC		, 0x0801, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_VCIR		, 0x0020, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_RAMAS1	, 0x0000, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_RAMAS2	, 0x0000, 0xFFFF);
@@ -88,9 +84,9 @@ void LIB_ILI9225_init(uint32_t clock, int GPIO_RS, int GPIO_CS){
 	LIB_ILI9225_write_reg(LIB_ILI9225_GC6		, 0x0808, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_GC7		, 0x0000, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_GC8		, 0x0A00, 0xFFFF);
-	LIB_ILI9225_write_reg(LIB_ILI9225_GC9		, 0x1007, 0xFFFF);//0x0710
+	LIB_ILI9225_write_reg(LIB_ILI9225_GC9		, 0x1007, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_GC10		, 0x0710, 0xFFFF);
-	LIB_ILI9225_write_reg(LIB_ILI9225_DC1		, 0x1017, 0xFFFF);//0x0012
+	LIB_ILI9225_write_reg(LIB_ILI9225_DC1		, 0x1017, 0xFFFF);
 	
 	for(tim = 0; tim < 100000; tim++);
 }
