@@ -49,23 +49,52 @@ typedef enum LIB_ILI9225_LCD_DISPLAY_POWER {
 	LIB_ILI9225_LCD_DISPLAY_POWER_Fast4 	= 0b1111
 } LIB_ILI9225_LCD_DISPLAY_POWER;
 	
-
+/**Initialize the screen.*/
 void LIB_ILI9225_init(uint32_t clock, int GPIO_RS, int GPIO_CS);
+
+/**Write a register of the screen.*/
 void LIB_ILI9225_write_reg(uint16_t reg, uint16_t data, uint16_t mask);
+
+/**Write a command to the screen.*/
 void LIB_ILI9225_wcom(uint16_t com);
+
+/**Write a register of the screen.*/
 void LIB_ILI9225_wreg(uint16_t reg, uint16_t data);
+
+/**Write data to the screen.*/
 void LIB_ILI9225_wdata(uint16_t data);
 
+/**Set the draw mode of the screen.*/
 void LIB_ILI9225_set_scan_direction(LIB_ILI9225_SCAN_DIR sd, int sim);
+
+/**Set the driver height of the screen in pixels.*/
 void LIB_ILI9225_set_display_driver_height(uint16_t height, int sim);
+
+/**Set the scan mode of the screen.*/
 void LIB_ILI9225_set_scanning_mode(LIB_ILI9225_LCD_SCANNING_MODE sm, int sim);
+
+/**Set the rotation and inversion of the screen.*/
 void LIB_ILI9225_set_display_mode(LIB_ILI9225_LCD_DISPLAY_MODE dm, int sim);
+
+/**Set the power usage of the display.*/
 void LIB_ILI9225_set_display_power(LIB_ILI9225_LCD_DISPLAY_POWER dp, int sim);
+
+/**Set the screen to standby or not.*/
 void LIB_ILI9225_set_standby_mode(int standby, int sim);
+
+/**Set the screen to sleep mode or not.*/
 void LIB_ILI9225_set_sleep_mode(int sleep, int sim);
+
+/**Software reset.*/
 void LIB_ILI9225_software_reset();
+
+/**Set the scroll start and stop positions.*/
 void LIB_ILI9225_set_vertical_scroll_start_stop(uint8_t start, uint8_t stop, int sim);
+
+/**Set the scroll speed.*/
 void LIB_ILI9225_set_vertical_scroll_speed(uint8_t speed, int sim);
+
+/**Set the draw window.*/
 void LIB_ILI9225_set_window(uint8_t xStart, uint8_t yStart, uint8_t xStop, uint8_t yStop, int sim);
 
 /*REGISTERS*/

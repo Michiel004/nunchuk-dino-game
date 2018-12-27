@@ -3,45 +3,52 @@
 #include "../lib/rasp3gpio.h"
 #include <stdint.h>
 
-char buffer[32];
-uint16_t regs[38];
+char buffer[32];//temp buffer
+uint16_t regs[38];//copy of all the registers on the ILI9225
 
-int pin_rs, pin_cs;
-volatile unsigned int tim;
+int pin_rs, pin_cs;//pins need
+volatile unsigned int tim;//timer var
 
+//write a reg, if sim == 1 then only write it locally
 void LIB_ILI9225_write_reg_sim(uint16_t reg, uint16_t data, uint16_t mask, int sim);
+//write a reg locally
 void LIB_ILI9225_write_regT(uint16_t reg, uint16_t data, uint16_t mask);
+//write the local regs to the chip
 void LIB_ILI9225_regT_to_chip();
+//clear the local regs
 void LIB_ILI9225_regT_clear();
+//set the local reg to the default value
 void LIB_ILI9225_regT_default();
 
+//get the local address from the device address
 uint16_t LIB_ILI9225_get_reg_local_addr(uint16_t reg);
+//get the device address from the local address
 uint16_t LIB_ILI9225_get_local_addr_reg(uint16_t addr);
 
 void LIB_ILI9225_init(uint32_t clock, int GPIO_RS, int GPIO_CS){
 	pin_rs = GPIO_RS;
 	pin_cs = GPIO_CS;
 	
-	RP3_SPI_init(clock);
+	RP3_SPI_init(clock);//init the spi
 	
+	//set the needed pin functions and pull
 	RP3_GPIO_set_pull(pin_rs, RP3_GPIO_pull_non);
 	RP3_GPIO_set_pull(pin_cs, RP3_GPIO_pull_non);
-	
 	RP3_GPIO_set_as_output(pin_rs);
 	RP3_GPIO_set_as_output(pin_cs);
-	
 	RP3_GPIO_pin_clear(pin_rs);
 	RP3_GPIO_pin_set(pin_cs);
 	
-	for(tim = 0; tim < 100000; tim++);
+	for(tim = 0; tim < 100000; tim++);//wait 100K cycles
 	
+	//Do the startup of the screen
 	LIB_ILI9225_write_reg(LIB_ILI9225_PC1, 0x0000, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_PC2, 0x0000, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_PC3, 0x0000, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_PC4, 0x0000, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_PC5, 0x0000, 0xFFFF);
 	
-	for(tim = 0; tim < 100000; tim++);
+	for(tim = 0; tim < 100000; tim++);//wait 100K cycles
 	
 	LIB_ILI9225_write_reg(LIB_ILI9225_PC2, 0x0018, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_PC3, 0x6121, 0xFFFF);
@@ -49,11 +56,11 @@ void LIB_ILI9225_init(uint32_t clock, int GPIO_RS, int GPIO_CS){
 	LIB_ILI9225_write_reg(LIB_ILI9225_PC5, 0x495F, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_PC1, 0x0A00, 0xFFFF);
 	
-	for(tim = 0; tim < 100000; tim++);
+	for(tim = 0; tim < 100000; tim++);//wait 100K cycles
 	
 	LIB_ILI9225_write_reg(LIB_ILI9225_PC2, 0x103B, 0xFFFF);
 	
-	for(tim = 0; tim < 100000; tim++);
+	for(tim = 0; tim < 100000; tim++);//wait 100K cycles
 	
 	LIB_ILI9225_write_reg(LIB_ILI9225_DOC		, 0x011C, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_LCDACDC	, 0x0100, 0xFFFF);
@@ -88,7 +95,7 @@ void LIB_ILI9225_init(uint32_t clock, int GPIO_RS, int GPIO_CS){
 	LIB_ILI9225_write_reg(LIB_ILI9225_GC10		, 0x0710, 0xFFFF);
 	LIB_ILI9225_write_reg(LIB_ILI9225_DC1		, 0x1017, 0xFFFF);
 	
-	for(tim = 0; tim < 100000; tim++);
+	for(tim = 0; tim < 100000; tim++);//wait 100K cycles
 }
 
 void LIB_ILI9225_set_scan_direction(LIB_ILI9225_SCAN_DIR sd, int sim){
