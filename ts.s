@@ -17,16 +17,6 @@ unused_handler:     .word hang
 irq_handler:        .word int_irq
 fiq_handler:        .word int_fiq
 
-.equ GPEDS0, 0x3F200040
-.equ GPCLR0, 0x3F200028
-.equ GPSET0, 0x3F20001C
-.equ GPFSEL1, 0x3F200004
-.equ IRQ_BASIC, 0x3F00B200
-.equ ARM_TIMER_CLI, 0x3F00B40C
-.equ GPLVL0,    0x3F200034
-.equ GPLVL1,    0x3F200038
-
-
 reset:
     mrs r0,cpsr        				;@ moving to HYPERVISOR mode
     bic r0,r0,#0x1F
@@ -52,21 +42,8 @@ reset:
     mov r0,#0xD1
     msr cpsr_c,r0
     mov sp,#0x4000
-
-;@ 	The following are used to set the stack for alternative operating modes.
-;@  In the present case, they are commented, thus ignored.
-	
-    ;@ (PSR_SVC_MODE|PSR_FIQ_DIS|PSR_IRQ_DIS)		
-    ;@ mov r0,#0xD3
-    ;@ msr cpsr_c,r0
-    ;@ mov sp,#0x8000000
-
-    ;@ SVC MODE, IRQ ENABLED, FIQ DIS
-    ;@mov r0,#0x53
-    ;@msr cpsr_c, r0
     
     bl mainfunc
-    
     
 hang: b hang
 
